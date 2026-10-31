@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "选文送 AI",
+  "version": "1.2.1",
+  "description": "恢复常见网页的选字与右键功能，将选中文字发送到你配置的 AI 智能体接口。",
+  "minimum_chrome_version": "109",
+  "permissions": ["activeTab", "scripting", "contextMenus", "storage"],
+  "optional_host_permissions": ["https://*/*", "http://*/*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "action": { "default_title": "选文送 AI", "default_popup": "popup.html" },
+  "options_page": "options.html"
+}

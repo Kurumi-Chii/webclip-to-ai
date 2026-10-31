@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>选文送 AI</title><link rel="stylesheet" href="style.css"><script type="module" src="popup.js"></script></head>
+<body class="popup">
+  <header><div class="mark" aria-hidden="true">选</div><div><h1>选文送 AI</h1><p class="sub">网页上的文字，一步送到你的智能体</p></div></header>
+  <button id="unlock" class="primary wide">允许当前页选择与右键</button>
+  <div class="row"><button id="restore" class="link">恢复网页原行为</button><button id="settings" class="link">接口设置</button></div>
+  <div id="pageStatus" class="status" role="status"></div>
+  <p class="help">关闭面板 → 拖动选中文字 → 右键 → 发送到 AI 智能体。图片里的文字暂不支持识别。</p>
+  <section class="card">
+    <h2>手动输入 / 重新发送</h2>
+    <textarea id="text" aria-label="要发送的文字" placeholder="也可以直接在这里输入文字…" maxlength="100000"></textarea>
+    <p id="source" class="meta"></p>
+    <button id="send" class="primary wide">发送这段文字</button>
+  </section>
+  <div id="sendStatus" class="status" role="status" aria-live="polite"></div>
+  <details id="response" hidden><summary>查看接口回复</summary><pre id="reply"></pre></details>
+  <p class="help">只在你点击发送时提交文字。最近一次发送内容仅在本次浏览器会话中保留。</p>
+</body></html>

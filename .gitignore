@@ -1,0 +1,25 @@
+# Local credentials and pairing data
+.env
+.env.*
+!.env.example
+**/connection.json
+**/pairing.json
+*.pem
+*.key
+
+# Build output
+dist/
+node_modules/
+*.tgz
+*.zip
+coverage/
+test-results/
+__pycache__/
+*.pyc
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>接口设置 · 选文送 AI</title><link rel="stylesheet" href="style.css"><script type="module" src="options.js"></script></head>
+<body><main class="settings">
+  <header><div class="mark" aria-hidden="true">选</div><div><h1>连接你的 AI 智能体</h1><p class="sub">把选中文字作为 JSON，POST 到你指定的接收接口</p></div></header>
+  <div id="connectionStatus" class="status" role="status" aria-live="polite"></div>
+  <form id="configForm">
+    <section class="card">
+      <h2>DeepSeek Harness 桌面版</h2>
+      <p>将文字填入 Harness 当前会话的输入框，由你手动发送。</p>
+      <label for="pairingFile">导入本机配对文件</label><input id="pairingFile" type="file" accept=".json,application/json">
+      <p class="help">Harness 接收插件启动后，会在 Harness 主目录的 webclip-to-ai 文件夹生成 connection.json。此文件只在本机读取，不会上传到其他服务。</p>
+      <button id="harness" type="button" class="primary">保存 Harness 本地连接</button>
+      <p class="help">请先安装接收插件并导入配对文件。无需填写 DeepSeek 模型 API Key。配对文件包含本机连接凭据，请勿上传 GitHub。</p>
+    </section>
+    <section class="card">
+      <h2>接收地址</h2>
+      <label for="endpoint">接口地址</label><input id="endpoint" type="url" placeholder="https://your-agent.example/api/receive" required autocomplete="off">
+      <p class="help">支持 HTTPS 与本地 HTTP 接口。这里需要接收 POST 请求的 API 地址，不能填写普通聊天网页地址。</p>
+      <label for="token">Bearer Token（可选）</label><input id="token" type="password" autocomplete="off" placeholder="接口不需要认证时留空">
+      <p class="help">配置仅保存在本机浏览器中，不会同步到其他设备。Token 只随请求发往接收接口。</p>
+    </section>
+    <section class="card">
+      <h2>请求内容</h2>
+      <label for="template">JSON 请求模板</label><textarea id="template" class="code" rows="9" spellcheck="false" required></textarea>
+      <p class="help">在 JSON 字符串值中使用 <code>{{text}}</code>（选中文字）、<code>{{title}}</code>（来源标题）、<code>{{url}}</code>（来源网址）。引号与换行会自动安全处理。删除 source 字段即可只发送文字。</p>
+      <details><summary>自定义认证与请求头</summary>
+        <label for="headers">额外请求头（JSON 对象）</label><textarea id="headers" class="code" rows="4" spellcheck="false"></textarea>
+        <p class="help">例如 {"X-API-Key":"你的密钥"}。如果使用自定义 Authorization，请将上面的 Bearer Token 留空。</p>
+      </details>
+    </section>
+    <div class="row"><button id="save" type="submit" class="primary">保存并授权接口</button><button id="test" type="button">发送测试文本</button></div>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+  </form>
+  <section class="card">
+    <h2>接入方式</h2>
+    <p>默认发送 <code>{"text":"选中的文字","source":{"title":"网页标题","url":"网页地址"}}</code>。接收端将 text 写入智能体的会话、知识库或输入队列，即可在你的智能体中使用。</p>
+    <p class="help">“发送测试文本”使用已保存配置，并会真正向接口提交一条测试消息。插件显示 HTTP 2xx 代表接口接收成功；是否写入你的智能体，由接收端处理。支持普通 JSON / 文本回复预览，不支持流式对话。</p>
+    <p class="help">保存时只申请接收接口所在主机的访问权限。浏览器的权限以主机为范围，不限于单一路径或端口。插件不会自动读取所有网页。</p>
+  </section>
+</main></body></html>

@@ -1,0 +1,24 @@
+{
+  "name": "@local/harness-webclip",
+  "version": "1.2.0",
+  "private": true,
+  "description": "将浏览器主动发送的选中文字填入当前 DeepSeek Harness 会话草稿，不自动发送。",
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": ["index.js", "bridge.js", "client.js", "pairing.js", "cordis.patch.yml", "README.md", "LICENSE"],
+  "engines": { "dsh": "0.2.1-rc.2" },
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": ["@deepseek-ai/dsh-client-ui-conversation", "@deepseek-ai/dsh-client-connection"]
+    }
+  },
+  "license": "MIT"
+}

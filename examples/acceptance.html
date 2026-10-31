@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>选文送 AI · 手动验收页</title>
+<style>
+  body{margin:60px auto;max-width:820px;padding:24px;background:#f6f8f5;color:#20332e;font:17px/1.8 system-ui,"Microsoft YaHei",sans-serif;-webkit-user-select:none;user-select:none}
+  h1{font-size:28px;line-height:1.4}article{white-space:pre-wrap;padding:24px;border:1px solid #b7cec1;border-radius:14px;background:white;font-size:20px}
+  .note{font-size:14px;color:#52685e}.tag{display:inline-block;padding:3px 10px;border-radius:99px;background:#dfebe3;color:#286757;font-size:13px}
+</style>
+<span class="tag">WebClip acceptance fixture v1.2.0</span>
+<h1>测试网页选文 → Harness 输入框</h1>
+<p>此页故意禁止选字、复制和右键。请在扩展里点击「允许当前页选择与右键」，关闭面板，再拖动选中下框中的两行文字。</p>
+<article id="sample">这是选文送 AI 的验收文本："你好"。
+第二行：保留换行、反斜杠 \ 和表情 😀。</article>
+<p>选中后按右键，点击「发送选中文字到 AI 智能体」。看到结果后切回 Harness 检查草稿。</p>
+<p class="note">保持已经保存的 Harness 本地连接。此页只展示测试文字，不提供接收接口；无需修改接口地址或输入任何密钥。不要点击 Harness 的发送按钮。</p>
+<script>
+  for (const event of ['contextmenu','selectstart','copy']) document.addEventListener(event, e => e.preventDefault());
+</script>
+</html>

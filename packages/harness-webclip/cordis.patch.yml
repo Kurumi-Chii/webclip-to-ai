@@ -1,0 +1,3 @@
+- insert:
+    - id: local-harness-webclip
+      name: '@local/harness-webclip'
