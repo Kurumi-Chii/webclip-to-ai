@@ -4,11 +4,11 @@
 
 [中文](README.md) · [Installation](docs/INSTALL.zh-CN.md) · [Privacy](PRIVACY.md)
 
-Preview **v1.2.1**. The 38 automated checks and 11 installed Harness Host/HTTP checks passed; the editor in the latter was simulated. Separate user-assisted testing confirmed the real Edge-to-Harness core flow, multiline text, existing-draft preservation, one-step undo, selection assistance, restore and refresh. Chrome, full browser-restart persistence and additional native edge cases remain unverified. See the [acceptance record](docs/ACCEPTANCE_2026-10-31.zh-CN.md). The companion pins runtime compatibility to **dsh 0.2.1-rc.2**.
+Preview **v1.2.2** adds DSH **0.2.2-rc.3** support alongside **0.2.1-rc.2** and **0.2.1-rc.5**. Installation, startup and the local receiver passed checks in an isolated 0.2.2-rc.3 Host. Desktop draft delivery on that runtime still needs a manual check. See the [earlier acceptance record](docs/ACCEPTANCE_2026-10-31.zh-CN.md).
 
 ## Features
 
-Component versions: browser extension **1.2.1**, Harness companion **1.2.0**. The browser-only patch reads the original clicked-frame selection to preserve newlines that may be flattened in the native context-menu text. Existing compatible companions do not need reinstalling.
+This release includes browser extension **1.2.2** and Harness companion **1.2.2**. Users with browser extension 1.2.1 can update the Harness companion separately.
 
 - Chrome / Edge Manifest V3 extension with a selection context menu.
 - On-demand assistance for common CSS and event-based selection restrictions.
@@ -28,7 +28,7 @@ The default JSON shape is `{ "text": "selection", "source": { "title": "title", 
 
 ### DeepSeek Harness draft
 
-1. In Harness, open **Plugins → Add plugin**, install the local `harness-webclip-1.2.0.tgz` Release asset, and enable it.
+1. In Harness, open **Plugins → Add plugin**, install the local `harness-webclip-1.2.2.tgz` Release asset, and enable it.
 2. On activation, the plugin creates `webclip-to-ai/connection.json` under `DSH_HOME`, or `~/.dsh` when that variable is unset.
 3. In extension options, import that file and save the Harness connection. Grant the loopback host permission.
 4. Open an editable ordinary desktop session in Harness. Deliver webpage text through the extension context menu.
@@ -46,7 +46,7 @@ npm test
 npm run build
 ```
 
-`dist/` receives extension, companion, complete-installation, source, and checksum artifacts. The CI workflow targets Windows and Linux; hosted execution is pending publication of a repository. Tagging `v1.2.1` triggers the provided prerelease workflow after tests and version validation.
+`dist/` receives extension, companion, complete-installation, source, and checksum artifacts. The CI workflow targets Windows and Linux. Tag pushes run checks and build artifacts for manual publication.
 
 ## Limits
 

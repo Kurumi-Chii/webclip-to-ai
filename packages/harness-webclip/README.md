@@ -2,7 +2,7 @@
 
 This is the optional Harness-side package of [WebClip to AI](../../README.md).
 
-Install its `.tgz` archive from the Harness **Plugins → Add plugin** dialog, then enable it. Supported runtime: **dsh 0.2.1-rc.2**. No model API key or third-party Node.js dependency is required.
+Install its `.tgz` archive from the Harness **Plugins → Add plugin** dialog, then enable it. Supported DSH runtimes are **0.2.1-rc.2**, **0.2.1-rc.5** and **0.2.2-rc.3**. No model API key or third-party Node.js dependency is required.
 
 On activation, the plugin creates `$DSH_HOME/webclip-to-ai/connection.json`, defaulting to `~/.dsh/webclip-to-ai/connection.json`. Import that file in the companion browser extension's settings and grant the loopback host permission. Keep it local: the file contains your installation's pairing token.
 

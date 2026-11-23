@@ -10,7 +10,9 @@ const companion = await json('packages/harness-webclip/package.json');
 assert.equal(extension.version, project.version);
 assert.equal(companion.version, project.webclip.harnessVersion);
 assert.equal(extension.manifest_version, 3);
-assert.equal(companion.engines.dsh, '0.2.1-rc.2');
+assert.deepEqual(companion.engines.dsh.split(/\s*\|\|\s*/), [
+  '0.2.1-rc.2', '0.2.1-rc.5', '0.2.2-rc.3'
+]);
 assert.ok(!extension.host_permissions && !extension.content_scripts);
 assert.ok(!companion.dependencies && !companion.scripts);
 for (const file of [extension.background.service_worker, extension.action.default_popup, extension.options_page]) {

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.2 — 2026-11-23
+
+- Harness companion 1.2.2 adds DSH 0.2.2-rc.3 compatibility alongside 0.2.1-rc.2 and 0.2.1-rc.5.
+- Installation, loading and the local receiver were checked in an isolated DSH 0.2.2-rc.3 Host. Desktop draft delivery on that runtime still needs a manual check.
+
 ## 1.2.1 — 2026-10-31
 
 Browser-only patch; Harness companion remains at 1.2.0.

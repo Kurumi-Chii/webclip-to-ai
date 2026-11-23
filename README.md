@@ -6,7 +6,7 @@
 
 选中文字后，通过浏览器右键菜单提交到自建 HTTP 接口；配合接收插件，也能把文字填入 **DeepSeek Harness 桌面版当前会话输入框**，由你检查后再发送。
 
-> **预览版 v1.2.1**：38 项自动化检查和 11 项实际 Harness Host/HTTP 接入检查已通过。Edge + Harness 的右键交付、多行、旧草稿保留、一次撤销、选字辅助恢复和刷新已由用户协助验收；Chrome、完整浏览器重启和部分边界场景仍待验证。未上架扩展商店；接收插件目前仅适配 `dsh 0.2.1-rc.2`。[详细验收记录](docs/ACCEPTANCE_2026-10-31.zh-CN.md)
+> **预览版 v1.2.2** 新增 DSH `0.2.2-rc.3` 支持。已在该版本的隔离 Host 验证安装、加载和本机接收服务，实际桌面草稿交付仍需验证。 [旧版验收记录](docs/ACCEPTANCE_2026-10-31.zh-CN.md)
 
 ## 能做什么
 
@@ -32,7 +32,7 @@ flowchart LR
 
 浏览器扩展负责交付文字。模型选择、模型 API 密钥和实际模型调用由智能体端处理。
 
-当前组件版本：**浏览器扩展 1.2.1 / Harness 接收插件 1.2.0**。1.2.1 修正右键选文丢失换行的问题，只需重新加载浏览器扩展；已有 Harness 接收插件无需重装。
+当前发行版包含 **浏览器扩展 1.2.2** 和 **Harness 接收插件 1.2.2**。已安装浏览器扩展 1.2.1 时，可只更新 Harness 接收插件。
 ## 操作演示
 
 选中网页文字，通过右键菜单填入 Harness 当前草稿，由你检查后发送。
@@ -63,7 +63,7 @@ flowchart LR
 
 ### 填入 DeepSeek Harness
 
-1. 在 Harness 的 **插件 → 添加插件** 中，安装 Release 提供的 `harness-webclip-1.2.0.tgz`，安装后点 **立即启用**。
+1. 在 Harness 的 **插件 → 添加插件** 中，安装 Release 提供的 `harness-webclip-1.2.2.tgz`，安装后点 **立即启用**。
 2. 接收插件启动时，在 Harness 主目录生成 `webclip-to-ai/connection.json`。默认 Windows 位置为 `%USERPROFILE%\.dsh\webclip-to-ai\connection.json`；设置过 `DSH_HOME` 时以该目录为准。
 3. 打开浏览器扩展的 **接口设置 → DeepSeek Harness 桌面版**，导入这个文件，点 **保存 Harness 本地连接**，授权访问本机地址。
 4. 在 Harness 打开普通会话并保持输入框可编辑，再回网页选字并通过右键交付。
@@ -77,7 +77,7 @@ flowchart LR
 | --- | --- |
 | Edge 网页右键选文 | 核心流程已由用户协助验收，含多行和辅助恢复 / 刷新 |
 | Chrome 网页右键选文 | 已实现，真实浏览器验收仍待完成 |
-| DeepSeek Harness 桌面版当前草稿 | `dsh 0.2.1-rc.2` 后台接入及真实草稿核心流程通过，部分边界待验证 |
+| DeepSeek Harness 桌面版当前草稿 | 支持 DSH `0.2.1-rc.2`、`0.2.1-rc.5` 和 `0.2.2-rc.3`。新版完成隔离 Host 验证 |
 | 在 Harness 中选择 Kimi、Gemini 等模型 | 由 Harness 的模型配置与账户能力决定，扩展无需感知模型 |
 | 自建智能体的 JSON POST 接口 | 已实现，需要自行提供接收端 |
 | 直接填入 Kimi / Gemini / 其他聊天网页 | 未实现 |
