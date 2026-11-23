@@ -3,3 +3,6 @@
 await import('./extension.test.mjs');
 await import('./harness.test.mjs');
 await import('./pairing.test.mjs');
+await import('./ocr.test.mjs');
+await import('./ocr-protocol.test.mjs');
+await import('./ocr-engine.test.mjs');

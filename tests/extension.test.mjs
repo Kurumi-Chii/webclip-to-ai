@@ -42,6 +42,7 @@ const listeners = {}, local = { config: cfg }, session = {}, badge = {};
 let settingsOpened = 0;
 const feedback = [];
 globalThis.chrome = {
+  commands: { onCommand: { addListener: fn => listeners.command = fn } },
   runtime: { id: 'unit-test', getURL: p => 'chrome-extension://unit-test/' + p, openOptionsPage: async () => { settingsOpened++; }, onInstalled: { addListener: fn => listeners.install = fn }, onMessage: { addListener: fn => listeners.message = fn } },
   contextMenus: { removeAll: fn => fn(), create: () => {}, onClicked: { addListener: fn => listeners.click = fn } },
   storage: { local: { setAccessLevel: async () => {}, get: async () => local }, session: { setAccessLevel: async () => {}, set: async data => Object.assign(session, data) } },

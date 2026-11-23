@@ -2,7 +2,7 @@
 
 ## Automated coverage
 
-Run `npm run check` and `npm test` from the repository root. The extension suite mocks Chrome APIs while using a real local HTTP server. The Harness suite runs the actual receiver and client plugin code against a simulated editor interface. Pairing tests use temporary directories and synthetic credentials.
+Prepare assets with `npm ci --ignore-scripts` and `npm run prepare:ocr`, then run `npm run check` and `npm test` from the repository root. The extension suite mocks Chrome APIs while using a real local HTTP server. The Harness suite runs the actual receiver and client plugin code against a simulated editor interface. Pairing tests use temporary directories and synthetic credentials.
 
 Coverage includes JSON escaping and nesting; endpoint validation; authentication; missing host permission; malformed configuration; text bounds; context-menu setup guidance; actionable Harness errors; insertion acknowledgement; preservation of draft selections; revision/session changes; deduplication after acknowledgement loss; generated credential persistence and uniqueness; and import rejection for unexpected destinations.
 
@@ -30,7 +30,7 @@ User-assisted testing on 2026-10-31 confirmed Edge installation, pairing save, n
 | Other Harness versions | Compatibility refusal or tested adaptation | Refusal verified with an incompatible fixture; other real runtimes unsupported |
 | macOS / Linux Harness | Actual desktop integration and permissions | Unverified |
 
-Direct desktop capture still fails, so completed native cases use explicit user operation, reports and screenshots. Remaining native cases require the same assistance or a restored control connection. GitHub-hosted workflow execution remains pending until a repository is published and accessible.
+Direct desktop capture still fails, so completed native cases use explicit user operation, reports and screenshots. Remaining native cases require the same assistance or a restored control connection. The v1.2.1 hosted workflow subsequently passed on Windows/Linux with Node 22/24. This does not certify the v1.3.0 local candidate, whose hosted execution and native OCR flow remain pending.
 
 ## Reproducible local diagnostic
 
@@ -42,3 +42,13 @@ Direct desktop capture still fails, so completed native cases use explicit user 
 6. Stop the receiver with Ctrl+C.
 
 Record the operating system, exact browser version, extension version, dsh runtime version, result, and any errors when completing manual acceptance. Use synthetic text and remove credentials from reports.
+
+## v1.3.0 OCR candidate
+
+60 automated checks include 18 new OCR flow checks and four actual packaged-WASM language fixtures. Four actual browser Worker cases also passed through a local harness using the real offscreen module, locally packaged engine/models and restricted CSP; its extension-message carrier was mocked. [OCR scope and manual checks](OCR.zh-CN.md).
+
+`npm run test:browser` is an optional isolated Playwright integration suite. It uses a test-only copy with loopback fixture host grants, never the user browser profile or Harness. It does not prove native activeTab user gestures. Installation of its browser and execution were blocked locally by process permissions (`spawn EPERM` / browser Mojo access denied), so this suite is not claimed passed and is not required by CI until verified in a suitable environment.
+
+## v1.3.1 regression checks
+
+76 automated checks passed, including popup focus, resource-loading status, pending navigation, post-capture document validation, missing/mismatched OCR acceptance, cancellation and late-result rejection, sender identity validation, Chromium 116 getContexts compatibility and handoff timeouts. Seven real-browser OCR/HTTP pipeline checks passed using the actual controller, offscreen module, local WASM/models and a synthetic browser API/message carrier. Native browser permissions/capture remain pending. See [release notes](RELEASE_NOTES_1.3.1.md).

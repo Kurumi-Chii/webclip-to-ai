@@ -34,3 +34,6 @@ summary { cursor: pointer; color: #365e50; }
 code { background: #edf2ed; padding: 1px 4px; border-radius: 4px; }
 .help { margin-top: 5px; }
 [hidden] { display: none !important; }
+select { width:100%; border:1px solid #c5d2c9; border-radius:8px; background:white; color:#20332e; padding:9px; font:inherit; }
+label.check { display:flex; gap:8px; align-items:flex-start; font-size:12px; font-weight:400; margin:12px 0; }
+.check input { width:auto; margin-top:4px; }

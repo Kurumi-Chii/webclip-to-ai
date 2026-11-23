@@ -2,6 +2,7 @@ import { DEFAULT_CONFIG, makeRequest, endpointInfo } from "./core.js";
 import { SELECT_CSS, setPageUnlock } from "./unlock.js";
 import { showPageFeedback } from "./feedback.js";
 import { readPageSelection, reconcileSelection } from "./selection.js";
+import { createOcrController } from './ocr.js';
 
 const MENU_SEND = "send-selection-to-agent";
 const MENU_UNLOCK = "allow-selection-and-context-menu";
@@ -18,9 +19,12 @@ void chrome.storage.local.setAccessLevel({ accessLevel: "TRUSTED_CONTEXTS" });
 void chrome.storage.session.setAccessLevel({ accessLevel: "TRUSTED_CONTEXTS" });
 
 chrome.runtime.onInstalled.addListener(() => {
+  // Reload/update invalidates an in-flight OCR worker; do not retain its busy lock.
+  void ocr.cancel().catch(() => {});
   chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({ id: MENU_SEND, title: "发送选中文字到 AI 智能体", contexts: ["selection"] });
     chrome.contextMenus.create({ id: MENU_UNLOCK, title: "允许此页选择文本与右键", contexts: ["page", "selection"] });
+    chrome.contextMenus.create({ id: 'ocr-region', title: '框选图片文字并交给 AI', contexts: ['page', 'image', 'selection'] });
   });
 });
 
@@ -48,7 +52,7 @@ async function readPreview(response, limit = 8000) {
 }
 
 export async function sendPayload(payload) {
-  const safe = { text: String(payload.text || "").slice(0, 100001), title: String(payload.title || ""), url: String(payload.url || "") };
+  const safe = { text: String(payload.text || "").slice(0, 100001), title: String(payload.title || ""), url: String(payload.url || ""), ocr: payload.ocr === true };
   await setResult({ ...safe, status: "sending", message: "正在发送…" });
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 20000);
@@ -141,6 +145,7 @@ export async function unlockTab(tabId, enabled = true) {
 }
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === 'ocr-region') return ocr.start(tab).then(result => { if (!result.ok) return pageFeedback(tab?.id, result.message, 'error'); });
   if (info.menuItemId === MENU_SEND) {
     return handleSelection(info, tab);
   }
@@ -149,13 +154,27 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   }
 });
 
+const ocr = createOcrController({ setResult, enqueueSend, pageFeedback });
+chrome.commands.onCommand.addListener(async command => {
+  if (command !== 'ocr-region') return;
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const result = await ocr.start(tab);
+    if (!result.ok) { await pageFeedback(tab?.id, result.message, 'error'); await setResult({ status: 'error', message: result.message }); }
+  } catch { await setResult({ status: 'error', message: '无法开始框选识字，请在普通网页点击扩展面板的「框选识字」。' }); }
+});
+
 // Sequential sends avoid accidental simultaneous requests and confusing status updates.
 chrome.runtime.onMessage.addListener((message, sender, respond) => {
+  const ocrTask = ocr.onMessage(message, sender);
+  if (ocrTask) { ocrTask.then(respond, () => respond({ ok: false })); return true; }
   if (sender.id !== chrome.runtime.id || !sender.url?.startsWith(extensionRoot)) return false;
   let task;
   if (message?.type === "send") {
     task = enqueueSend(message.payload || {});
-  } else if (message?.type === "unlock") task = unlockTab(message.tabId, message.enabled !== false);
+  } else if (message?.type === 'ocr-start') task = chrome.tabs.get(message.tabId).then(tab => ocr.start(tab));
+  else if (message?.type === 'ocr-abort') task = ocr.cancel();
+  else if (message?.type === "unlock") task = unlockTab(message.tabId, message.enabled !== false);
   else return false;
   task.then(respond, error => respond({ ok: false, message: error.message || "操作失败。" }));
   return true;

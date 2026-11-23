@@ -1,5 +1,7 @@
 # 发布到你的 GitHub 账号
 
+已有仓库时，使用 GitHub Desktop 在本地查看本次修改、提交并 Push origin 即可；不需要再创建同名仓库。v1.3.1 是本地 OCR 候选版，应先完成 [新版原生验收](OCR.zh-CN.md)，再推送版本标签创建预发布。下文的新建仓库步骤仅适用于首次发布。
+
 建议仓库名：**webclip-to-ai**。
 
 建议 Description：**选文送 AI：浏览器右键交付网页选文，支持自建接口与 DeepSeek Harness 当前草稿。**
@@ -35,14 +37,16 @@
 本地运行：
 
 ```sh
+npm ci --ignore-scripts
+npm run prepare:ocr
 npm run check
 npm test
 npm run build
 ```
 
-在 GitHub **Releases → Draft a new release** 中，使用标签 `v1.2.1`，说明可参考 `docs/RELEASE_NOTES_1.2.1.md`，附件使用 `dist/` 内的安装包、源码包和校验文件。不要附加本机配对文件。
+在 GitHub **Releases → Draft a new release** 中，使用标签 `v1.3.1`，说明可参考 `docs/RELEASE_NOTES_1.3.1.md`，附件使用 `dist/` 内的安装包、源码包和校验文件。不要附加本机配对文件。
 
-也可以推送 `v1.2.1` 标签，触发仓库自带的 Release 工作流。它会验证版本、重新测试并生成预发布版。两种方式择一，避免重复创建同一标签的 Release。
+也可以推送 `v1.3.1` 标签，触发仓库自带的 Release 工作流。它会验证版本、重新测试并生成预发布版。两种方式择一，避免重复创建同一标签的 Release。
 
 项目目前只是本地准备好的发布源文件；这份说明不表示已经连接、创建或发布到任何 GitHub 账号。
 

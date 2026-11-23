@@ -10,7 +10,7 @@ const companion = await json('packages/harness-webclip/package.json');
 assert.equal(extension.version, project.version);
 assert.equal(companion.version, project.webclip.harnessVersion);
 assert.equal(extension.manifest_version, 3);
-assert.equal(companion.engines.dsh, '0.2.1-rc.2');
+assert.equal(companion.engines.dsh, '0.2.1-rc.2 || 0.2.1-rc.5');
 assert.ok(!extension.host_permissions && !extension.content_scripts);
 assert.ok(!companion.dependencies && !companion.scripts);
 for (const file of [extension.background.service_worker, extension.action.default_popup, extension.options_page]) {
@@ -22,7 +22,7 @@ assert.equal(HARNESS_PRESET.token, '', 'Public defaults must not contain a token
 assert.ok(!companion.files.includes('pairing.json') && !companion.files.includes('connection.json'));
 
 const folders = ['extension', 'packages', 'scripts', 'tests', 'docs', '.github', 'examples'];
-const rootFiles = ['README.md', 'README.en.md', 'LICENSE', 'PRIVACY.md', 'SECURITY.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'package.json', '.gitignore', '.gitattributes', '.editorconfig'];
+const rootFiles = ['README.md', 'README.en.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md', 'PRIVACY.md', 'SECURITY.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'package.json', '.gitignore', '.gitattributes', '.editorconfig'];
 async function collect(folder) {
   const entries = [];
   for (const item of await fs.readdir(path.join(root, folder), { withFileTypes: true })) {
@@ -37,6 +37,7 @@ const files = [...rootFiles];
 for (const folder of folders) files.push(...await collect(folder));
 for (const file of files) {
   assert.ok(!['connection.json', 'pairing.json'].includes(path.basename(file)), `Private runtime configuration in source: ${file}`);
+  if (file.startsWith('extension/vendor/') || /\.(png|gif|jpg|wasm|traineddata)$/.test(file)) continue;
   const source = await fs.readFile(path.join(root, file), 'utf8');
   assert.ok(!/C:[\\/]Users[\\/]Admin/i.test(source), `Personal installation path: ${file}`);
   if (file.endsWith('.json')) JSON.parse(source);

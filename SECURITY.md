@@ -2,7 +2,7 @@
 
 ## Supported preview
 
-The current maintained version is **1.2.1**. Harness support is pinned to runtime **0.2.1-rc.2**, because the draft integration uses runtime-specific client interfaces. Do not bypass a runtime-version refusal; adapt and test the companion for the new runtime instead.
+The current local OCR candidate is **1.3.1**; **1.2.1** is the previously published preview. Companion 1.2.1 explicitly allows only runtimes **0.2.1-rc.2 and 0.2.1-rc.5**, because the draft integration uses runtime-specific client interfaces. Do not bypass a runtime-version refusal; adapt and test the companion for the new runtime instead.
 
 ## Reporting
 
@@ -10,6 +10,8 @@ Do not attach pairing files, API tokens, browser profiles, or unredacted network
 
 ## Trust boundaries
 
+- Region OCR is explicitly invoked. Isolated content-script capture messages are bound to a random job ID, source tab, main frame and document. Page/connection changes prevent automatic delivery; duplicate completions do not resubmit. Screenshots never enter session storage or the HTTP payload.
+- OCR uses locally packaged workers, WASM and hash-pinned language data. The CSP allows local WASM execution but no remote scripts. The offscreen document additionally limits its own connections to local extension assets. Existing optional receiver host patterns and saved-host permission checks remain unchanged from 1.2.1. There are no all-site persistent content scripts or web-accessible OCR workers.
 - The public extension preset contains only non-secret defaults. Each Harness installation generates its own local token with 32 random bytes.
 - The receiver binds only literal IPv4 loopback, validates Host and Origin, requires JSON plus Bearer authentication, and exposes no CORS opt-in.
 - Internal poll/ack routes use Harness's existing authenticated Connection carrier. They are available to authenticated clients of that Harness host; this preview is intended for a single-user local desktop deployment, not a multi-tenant or publicly shared Harness server.

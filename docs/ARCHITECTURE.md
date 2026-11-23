@@ -54,3 +54,7 @@ The extension accepts only the expected file format, a literal `http://127.0.0.1
 - [Harness client modules](https://github.com/deepseek-ai/deepseek-harness/tree/master/packages/client/modules)
 - [Harness conversation interfaces](https://github.com/deepseek-ai/deepseek-harness/tree/master/packages/client/ui-conversation)
 - [Harness plugin manager](https://github.com/deepseek-ai/deepseek-harness/tree/master/packages/boot/plugin-manager)
+
+## Local region OCR (1.3.0)
+
+The command, popup or context-menu gesture starts a single job. An isolated Shadow DOM overlay returns a nonce-bound viewport rectangle. The service worker verifies the active tab, document, viewport and scroll position, captures the visible tab, and sends pixels only to the extension offscreen document. That document crops using actual screenshot/viewport ratios and runs the packaged Tesseract worker/WASM/models. OCR progress messages keep the background active. Recognized text is checked, claimed once, then queued through the existing sender; preview mode stores text without HTTP. Tab/document or connection changes stop automatic delivery and preserve recoverable text. Offscreen cleanup releases images and workers. Native installed-browser OCR acceptance remains pending.

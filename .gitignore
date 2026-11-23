@@ -9,6 +9,9 @@
 
 # Build output
 dist/
+extension/vendor/
+playwright-report/
+browser-results/
 node_modules/
 *.tgz
 *.zip

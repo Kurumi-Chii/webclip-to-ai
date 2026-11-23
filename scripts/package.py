@@ -2,6 +2,7 @@
 import hashlib
 import io
 import json
+import runpy
 import tarfile
 import zipfile
 from pathlib import Path
@@ -10,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / 'dist'
 VERSION = json.loads((ROOT / 'package.json').read_text(encoding='utf-8'))['version']
 SOURCE_DIRS = ['extension', 'packages', 'scripts', 'tests', 'docs', '.github', 'examples']
-SOURCE_FILES = ['package.json', 'package-lock.json', 'README.md', 'README.en.md', 'LICENSE', 'PRIVACY.md', 'SECURITY.md', 'CONTRIBUTING.md', 'CHANGELOG.md', '.gitignore', '.gitattributes', '.editorconfig']
+SOURCE_FILES = ['package.json', 'package-lock.json', 'README.md', 'README.en.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md', 'PRIVACY.md', 'SECURITY.md', 'CONTRIBUTING.md', 'CHANGELOG.md', '.gitignore', '.gitattributes', '.editorconfig']
 
 def public_files():
     files = [ROOT / name for name in SOURCE_FILES]
@@ -32,6 +33,7 @@ def write_zip(destination, entries):
         assert not any(Path(n).name in ('connection.json', 'pairing.json') for n in archive.namelist())
 
 def build():
+    runpy.run_path(str(ROOT / 'scripts/prepare-ocr.py'))['verify']()
     DIST.mkdir(exist_ok=True)
     files = public_files()
     preset = (ROOT / 'extension/harness-preset.js').read_text(encoding='utf-8')
@@ -55,7 +57,7 @@ def build():
     source = DIST / f'webclip-to-ai-source-v{VERSION}.zip'
     write_zip(source, [(p, 'webclip-to-ai/' + p.relative_to(ROOT).as_posix()) for p in files])
     complete = DIST / f'webclip-to-ai-v{VERSION}.zip'
-    install_files = [(p, p.relative_to(ROOT).as_posix()) for p in files if p.is_relative_to(ROOT / 'extension') or p.is_relative_to(ROOT / 'docs') or p.name in ('README.md', 'README.en.md', 'LICENSE', 'PRIVACY.md', 'SECURITY.md') and p.parent == ROOT]
+    install_files = [(p, p.relative_to(ROOT).as_posix()) for p in files if p.is_relative_to(ROOT / 'extension') or p.is_relative_to(ROOT / 'docs') or p.name in ('README.md', 'README.en.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md', 'PRIVACY.md', 'SECURITY.md') and p.parent == ROOT]
     install_files.append((tgz, tgz.name))
     write_zip(complete, install_files)
     artifacts = [extension, tgz, complete, source]
